@@ -152,6 +152,15 @@ summary(m.type)
     m4 = lmer(AvgAmp ~ Cognitive.Reappraisal_c + (1|Subject) + (1|Channel), data = Data_1_Difference, REML = TRUE)
       summary(m4)
       confint(m4)
+      #calculate full model
+      m4.full = 
+        lmer(AvgAmp ~ Expressive.Suppression_c + (1|Subject) + (1|Channel), data = Data_1_Difference) %>% 
+        r.squaredGLMM()
+      #calculate reduced model
+      m4.red = lmer(AvgAmp ~ 1 + (1|Subject) + (1|Channel), data = Data_1_Difference) %>% 
+        r.squaredGLMM()
+      #calculate cohen's f statistic
+      effect.size = (m4.full[1] - m4.red[1])/(1-m4.full[1])
    
   #3. Depressive Symptoms   
     #general distress
